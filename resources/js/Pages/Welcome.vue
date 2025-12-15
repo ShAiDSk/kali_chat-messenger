@@ -1,26 +1,47 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import NavBar from '@/Components/NavBar.vue'; // Uses the fixed NavBar
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
 });
 
-// --- MOUSE PARALLAX LOGIC ---
+// --- FIX: DEFINING THE MISSING VARIABLES ---
 const heroCard = ref(null);
-const mouseX = ref(0);
-const mouseY = ref(0);
+const mouseX = ref(0); // Added this
+const mouseY = ref(0); // Added this
+const typedText = ref('');
+const fullText = "THE FUTURE OF CHAT.";
+let typeIndex = 0;
 
+// Demo Chat Data
+const demoMessages = ref([]);
+const fullDemoConversation = [
+    { id: 1, type: 'ai', text: 'Reverb Protocol v2.0 Online. 🟢', delay: 800 },
+    { id: 2, type: 'user', text: 'Latency check. How fast is this?', delay: 1800 },
+    { id: 3, type: 'ai', text: 'Sub-millisecond response. Encrypted. ⚡', delay: 2800 },
+];
+
+// --- FIX: MATCHING FUNCTION NAME WITH TEMPLATE ---
 const handleMouseMove = (e) => {
     if (!heroCard.value) return;
 
-    const { left, top, width, height } = heroCard.value.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25; // Sensitivity divisor
-    const y = (e.clientY - top - height / 2) / 25;
+    const rect = heroCard.value.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    mouseX.value = x;
-    mouseY.value = -y; // Invert Y for natural tilt
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Calculate rotation
+    const rotateX = ((y - centerY) / 25) * -1;
+    const rotateY = (x - centerX) / 25;
+
+    // Store raw values for 3D transform in template
+    mouseX.value = rotateY; // Assigning rotation values to X/Y
+    mouseY.value = rotateX;
 };
 
 const resetTilt = () => {
@@ -28,26 +49,30 @@ const resetTilt = () => {
     mouseY.value = 0;
 };
 
-// --- TYPING EFFECT ---
-const typedText = ref('');
-const fullText = "Reimagined.";
-const typingSpeed = 150;
+// --- ANIMATION LOOP ---
+const typeWriter = () => {
+    if (typeIndex < fullText.length) {
+        typedText.value += fullText.charAt(typeIndex);
+        typeIndex++;
+        setTimeout(typeWriter, 100);
+    }
+};
+
+const playDemoChat = () => {
+    fullDemoConversation.forEach(msg => {
+        setTimeout(() => {
+            demoMessages.value.push(msg);
+        }, msg.delay);
+    });
+};
 
 onMounted(() => {
-    let i = 0;
-    const typeWriter = setInterval(() => {
-        if (i < fullText.length) {
-            typedText.value += fullText.charAt(i);
-            i++;
-        } else {
-            clearInterval(typeWriter);
-        }
-    }, typingSpeed);
+    setTimeout(typeWriter, 500);
+    playDemoChat();
 });
 </script>
 
 <template>
-
     <Head title="Welcome" />
 
     <div @mousemove="handleMouseMove" @mouseleave="resetTilt"
@@ -55,62 +80,21 @@ onMounted(() => {
 
         <div class="fixed inset-0 z-0 pointer-events-none">
             <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-
             <div class="absolute inset-0 grid-background">
                 <div class="scan-line"></div>
             </div>
-
             <div v-for="n in 10" :key="n" class="particle" :style="`--delay: ${n * 2}s; --left: ${n * 10}%;`"></div>
-
-            <div
-                class="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-blob">
-            </div>
-            <div
-                class="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] animate-blob animation-delay-2000">
-            </div>
-            <div
-                class="absolute bottom-[-20%] left-[10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] animate-blob animation-delay-4000">
-            </div>
+            <div class="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-blob"></div>
+            <div class="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] animate-blob animation-delay-2000"></div>
+            <div class="absolute bottom-[-20%] left-[10%] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] animate-blob animation-delay-4000"></div>
         </div>
 
-        <nav
-            class="relative z-50 p-6 flex justify-between items-center max-w-7xl mx-auto backdrop-blur-sm bg-black/10 border-b border-white/5 rounded-b-2xl">
-            <div class="flex items-center gap-3">
-                <div
-                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 border border-white/10 group">
-                    <svg class="w-6 h-6 text-white group-hover:rotate-12 transition-transform duration-300"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                    </svg>
-                </div>
-                <span class="text-2xl font-bold tracking-tighter text-white">Reverb</span>
-            </div>
-
-            <div v-if="canLogin" class="flex items-center gap-4">
-                <Link v-if="$page.props.auth.user" :href="route('dashboard')"
-                    class="text-sm font-semibold text-gray-300 hover:text-white transition">Dashboard</Link>
-                <template v-else>
-                    <Link :href="route('login')"
-                        class="hidden md:inline-block text-sm font-semibold text-gray-300 hover:text-white transition">
-                        Log in</Link>
-                    <Link :href="route('register')"
-                        class="group relative px-6 py-2.5 bg-white text-gray-900 rounded-full text-sm font-bold hover:bg-gray-100 transition shadow-xl shadow-white/5 overflow-hidden">
-                        <span class="relative z-10">Get Started</span>
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                        </div>
-                    </Link>
-                </template>
-            </div>
-        </nav>
+        <NavBar /> 
 
         <main class="relative z-10 mt-12 px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
 
             <div class="animate-float">
-                <span
-                    class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold uppercase tracking-widest hover:bg-indigo-500/20 transition cursor-pointer backdrop-blur-md">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold uppercase tracking-widest hover:bg-indigo-500/20 transition cursor-pointer backdrop-blur-md">
                     <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
                     Live Websockets
                 </span>
@@ -118,8 +102,7 @@ onMounted(() => {
 
             <h1 class="mt-8 text-5xl md:text-8xl font-extrabold leading-tight tracking-tight">
                 Real-Time Chat <br class="hidden md:block" />
-                <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient">
                     {{ typedText }}<span class="animate-blink text-white">_</span>
                 </span>
             </h1>
@@ -144,12 +127,9 @@ onMounted(() => {
                     class="relative bg-[#0F1117]/90 border border-gray-800 rounded-2xl shadow-2xl overflow-hidden transition-transform duration-100 ease-out group"
                     :style="{ transform: `rotateY(${mouseX}deg) rotateX(${mouseY}deg)` }">
 
-                    <div
-                        class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none z-20">
-                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none z-20"></div>
 
-                    <div
-                        class="h-10 bg-[#161b22] border-b border-gray-800 flex items-center px-4 gap-2 justify-between">
+                    <div class="h-10 bg-[#161b22] border-b border-gray-800 flex items-center px-4 gap-2 justify-between">
                         <div class="flex gap-2">
                             <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
                             <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
@@ -159,16 +139,12 @@ onMounted(() => {
                     </div>
 
                     <div class="p-4 grid grid-cols-4 gap-4 h-[500px] text-left">
-                        <div
-                            class="col-span-1 bg-gray-900/50 rounded-xl border border-gray-800/50 p-4 space-y-4 hidden md:block backdrop-blur-md">
+                        <div class="col-span-1 bg-gray-900/50 rounded-xl border border-gray-800/50 p-4 space-y-4 hidden md:block backdrop-blur-md">
                             <div class="h-8 bg-gray-800 rounded-lg w-3/4 animate-pulse"></div>
                             <div class="space-y-3">
-                                <div
-                                    class="h-12 bg-gray-800/50 rounded-lg w-full flex items-center gap-3 px-3 hover:bg-white/5 transition-colors">
+                                <div class="h-12 bg-gray-800/50 rounded-lg w-full flex items-center gap-3 px-3 hover:bg-white/5 transition-colors">
                                     <div class="w-8 h-8 rounded-full bg-indigo-500/20 relative">
-                                        <div
-                                            class="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-gray-900">
-                                        </div>
+                                        <div class="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-gray-900"></div>
                                     </div>
                                     <div class="w-20 h-3 bg-gray-700 rounded"></div>
                                 </div>
@@ -179,50 +155,30 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <div
-                            class="col-span-4 md:col-span-3 bg-gray-900/30 rounded-xl border border-gray-800/50 relative flex flex-col p-6 backdrop-blur-md">
+                        <div class="col-span-4 md:col-span-3 bg-gray-900/30 rounded-xl border border-gray-800/50 relative flex flex-col p-6 backdrop-blur-md">
                             <div class="flex-1 space-y-6">
-                                <div class="flex gap-3 animate-fade-in-up" style="animation-delay: 0.5s">
-                                    <div
-                                        class="w-8 h-8 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-xs">
-                                        AI</div>
-                                    <div
-                                        class="bg-gray-800 p-3 rounded-2xl rounded-tl-none max-w-sm text-sm text-gray-300 shadow-md">
-                                        Server connection established. Listening on port 8080.
-                                    </div>
-                                </div>
-                                <div class="flex gap-3 flex-row-reverse animate-fade-in-up" style="animation-delay: 1s">
-                                    <div
-                                        class="w-8 h-8 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center font-bold text-xs">
-                                        ME</div>
-                                    <div
-                                        class="bg-gradient-to-r from-indigo-600 to-purple-600 p-3 rounded-2xl rounded-tr-none max-w-sm text-sm text-white shadow-lg shadow-indigo-900/20">
-                                        The animation is smooth! Is this Inertia.js?
-                                    </div>
-                                </div>
-                                <div class="flex gap-3 animate-fade-in-up" style="animation-delay: 1.5s">
-                                    <div
-                                        class="w-8 h-8 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-xs">
-                                        AI</div>
-                                    <div
-                                        class="bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
-                                        <div class="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></div>
-                                        <div class="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce delay-100">
+                                <TransitionGroup name="list">
+                                    <div v-for="msg in demoMessages" :key="msg.id" class="flex gap-4" :class="{ 'flex-row-reverse': msg.type === 'user' }">
+                                        <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs"
+                                             :class="msg.type === 'ai' ? 'bg-indigo-500' : 'bg-purple-500'">
+                                            {{ msg.type === 'ai' ? 'AI' : 'ME' }}
                                         </div>
-                                        <div class="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce delay-200">
+                                        <div class="p-3 rounded-2xl max-w-sm text-sm text-gray-300 shadow-md"
+                                             :class="msg.type === 'ai' ? 'bg-gray-800 rounded-tl-none' : 'bg-gradient-to-r from-indigo-600 to-purple-600 rounded-tr-none text-white'">
+                                            {{ msg.text }}
                                         </div>
                                     </div>
-                                </div>
+                                </TransitionGroup>
                             </div>
-                            <div
-                                class="mt-4 h-12 bg-gray-800 rounded-full border border-gray-700 flex items-center px-4 justify-between">
-                                <div class="w-1 h-4 bg-indigo-500 animate-blink"></div>
-                                <div
-                                    class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition-transform">
-                                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 12h14M12 5l7 7-7 7" />
+                            
+                            <div class="mt-4 h-12 bg-gray-800 rounded-full border border-gray-700 flex items-center px-4 justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1 h-4 bg-indigo-500 animate-blink"></span>
+                                    <span class="text-gray-500 text-sm">Type command...</span>
+                                </div>
+                                <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition-transform">
+                                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
                                 </div>
                             </div>
@@ -234,12 +190,8 @@ onMounted(() => {
             <div id="features" class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl pb-20">
                 <div v-for="(feature, index) in features" :key="index"
                     class="p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group hover:-translate-y-2 backdrop-blur-sm relative overflow-hidden">
-                    <div
-                        class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl group-hover:bg-indigo-500/30 transition-colors">
-                    </div>
-
-                    <div
-                        class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-6 text-indigo-400 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl group-hover:bg-indigo-500/30 transition-colors"></div>
+                    <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-6 text-indigo-400 group-hover:text-white group-hover:scale-110 transition-all duration-300">
                         <component :is="feature.icon" class="w-6 h-6" />
                     </div>
                     <h3 class="text-xl font-bold text-white mb-3">{{ feature.title }}</h3>
@@ -256,7 +208,6 @@ onMounted(() => {
 </template>
 
 <script>
-// Mock Features Data
 import { h } from 'vue';
 const BoltIcon = h('svg', { fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 }, [h('path', { strokeLinecap: "round", strokeLinejoin: "round", d: "M13 10V3L4 14h7v7l9-11h-7z" })]);
 const LockIcon = h('svg', { fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 }, [h('path', { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" })]);
@@ -294,26 +245,12 @@ export default {
 }
 
 @keyframes scan {
-    0% {
-        top: -10%;
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        top: 110%;
-        opacity: 0;
-    }
+    0% { top: -10%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 110%; opacity: 0; }
 }
 
-/* FLOATING PARTICLES */
 .particle {
     position: absolute;
     bottom: -10px;
@@ -327,78 +264,35 @@ export default {
 }
 
 @keyframes floatUp {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-100vh) scale(0);
-        opacity: 0;
-    }
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-100vh) scale(0); opacity: 0; }
 }
 
-/* BLINKING CURSOR */
-.animate-blink {
-    animation: blink 1s step-end infinite;
-}
+.animate-blink { animation: blink 1s step-end infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-@keyframes blink {
+.animate-float { animation: float 6s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
-    0%,
-    100% {
-        opacity: 1;
-    }
+.perspective-1000 { perspective: 1000px; }
 
-    50% {
-        opacity: 0;
-    }
-}
-
-/* GENERAL ANIMATIONS */
-.animate-float {
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.perspective-1000 {
-    perspective: 1000px;
-}
-
-.animate-blob {
-    animation: blob 15s infinite;
-}
-
+.animate-blob { animation: blob 15s infinite; }
 @keyframes blob {
-    0% {
-        transform: translate(0px, 0px) scale(1);
-    }
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
 
-    33% {
-        transform: translate(30px, -50px) scale(1.1);
-    }
-
-    66% {
-        transform: translate(-20px, 20px) scale(0.9);
-    }
-
-    100% {
-        transform: translate(0px, 0px) scale(1);
-    }
+/* LIST ANIMATION FOR CHAT DEMO */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 </style>
