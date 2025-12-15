@@ -8,6 +8,7 @@
 ![Reverb](https://img.shields.io/badge/Reverb-WebSockets-orange?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
+# Video Demo
 <div align="center">
   <img src="Kali-chat-demo.gif" alt="App Demo" width="100%">
   <br><br>
