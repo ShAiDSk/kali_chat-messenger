@@ -93,7 +93,7 @@ onMounted(() => {
                                 <p class="text-sm font-bold text-white truncate font-mono">{{ currentUser.email }}</p>
                             </div>
                             <div class="bg-[#0A0A12]">
-                                <DropdownLink :href="route('profile.edit')" class="text-gray-300 hover:text-white font-medium hover:bg-white/5 transition-colors">Profile</DropdownLink>
+                                <DropdownLink :href="route('profile.edit')" class="text-green-300 hover:text-white font-medium hover:bg-white/5 transition-colors">Profile</DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button" class="text-red-400 hover:text-red-300 hover:bg-red-900/20 font-medium transition-colors">Log Out</DropdownLink>
                             </div>
                         </template>
@@ -137,7 +137,7 @@ onMounted(() => {
                     <div class="font-medium text-xs text-gray-400">{{ currentUser.email }}</div>
                 </div>
                 <div class="mt-1 space-y-1">
-                    <ResponsiveNavLink :href="route('profile.edit')" class="text-gray-300 hover:text-white hover:bg-white/5 rounded-lg">Profile</ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('profile.edit')" class="text-gray-400 hover:text-white hover:bg-white/5 rounded-lg">Profile</ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('logout')" method="post" as="button" class="text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg w-full text-left">Log Out</ResponsiveNavLink>
                 </div>
             </div>
