@@ -30,7 +30,7 @@
 
 ## 🔮 Overview
 
-**Reverb Messenger** is not just a chat app; it's a visual experience. Built on the bleeding edge of the PHP ecosystem using **Laravel 11** and **Laravel Reverb**, it delivers WebSocket-powered communication without the need for external services like Pusher.
+**Kali-chat Messenger** is not just a chat app; it's a visual experience. Built on the bleeding edge of the PHP ecosystem using **Laravel 11** and **Laravel Reverb**, it delivers WebSocket-powered communication without the need for external services like Pusher.
 
 The frontend is crafted with **Vue 3 (Composition API)** and **Inertia.js**, wrapped in a stunning **Cyberpunk/Deep Space** UI that features real-time physics-based animations, 3D tilt effects, and holographic interfaces.
 
@@ -84,8 +84,8 @@ Follow these steps to deploy the Reverb grid on your local machine.
 
 ### **1. Clone the Repository**
 ```bash
-git clone [https://github.com/yourusername/reverb-messenger.git](https://github.com/yourusername/reverb-messenger.git)
-cd reverb-messenger
+git clone https://github.com/ShAiDSk/kali_chat-messenger.git
+cd kali_chat-messenger
 
 ### **2. Install Dependencies**
 
