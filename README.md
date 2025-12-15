@@ -1,6 +1,6 @@
 
-# ⚡ Kali-Chat Messenger by SHAID SK
-### The Next-Gen Real-Time Communication Platform
+# ⚡ Kali Chat Messenger - By SHAID SK.
+### The Ultimate Cyber-SaaS Real-Time Communication Platform
 
 ![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)
@@ -9,73 +9,68 @@
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 <div align="center">
+  <img src="Kali-chat-demo.gif" alt="App Demo" width="100%">
+  <br><br>
   <p>
     <strong>Zero Latency. Infinite Style. Total Security.</strong>
   </p>
   <p>
-    A high-performance real-time chat application featuring a <strong>Cyber-SaaS aesthetic</strong>, 
-    <strong>Glassmorphism UI</strong>, and <strong>3D Interactive Elements</strong>.
+    A high-performance chat application featuring a <strong>Cyber-SaaS aesthetic</strong>, 
+    <strong>Holographic UI</strong>, and <strong>3D Interactive Elements</strong>.
   </p>
+  <br />
   <a href="#-installation"><strong>Explore the Docs »</strong></a>
-  <br />
-  <br />
-  <a href="#-screenshots">View Demo</a>
   ·
-  <a href="#-features">Report Bug</a>
+  <a href="https://github.com/ShAiDSk/kali_chat-messenger/issues">Report Bug</a>
   ·
-  <a href="#-roadmap">Request Feature</a>
+  <a href="https://github.com/ShAiDSk/kali_chat-messenger/issues">Request Feature</a>
 </div>
 
 ---
 
 ## 🔮 Overview
 
-**Kali-chat Messenger** is not just a chat app; it's a visual experience. Built on the bleeding edge of the PHP ecosystem using **Laravel 11** and **Laravel Reverb**, it delivers WebSocket-powered communication without the need for external services like Pusher.
+**Kali Chat Messenger** (powered by Reverb) redefines the chat experience. Built on the bleeding edge of **Laravel 11**, it leverages **Laravel Reverb** for blazing-fast WebSocket communication without external dependencies.
 
-The frontend is crafted with **Vue 3 (Composition API)** and **Inertia.js**, wrapped in a stunning **Cyberpunk/Deep Space** UI that features real-time physics-based animations, 3D tilt effects, and holographic interfaces.
+The frontend is a masterpiece of **Vue 3 (Composition API)** and **Tailwind CSS**, featuring a deep-space cyberpunk aesthetic with real-time physics-based animations, spring-loaded message bubbles, and reactive lighting effects.
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
-### **✨ Core Experience**
-* **Real-Time Messaging:** Instant delivery via Secure WebSockets (Laravel Reverb).
-* **Live Presence:** See who is online/offline instantly with glowing status indicators.
-* **Typing Indicators:** Real-time feedback when other users are composing messages.
-* **Read Receipts:** WhatsApp-style Double Tick system (Grey for sent, Green for read).
-* **Image Sharing:** Drag-and-drop image uploads with instant preview and holographic hover effects.
+### **✨ Interactive UI/UX**
+* **Supreme Glassmorphism:** Multilayered frosted glass panels (`backdrop-blur-xl`) with reactive borders.
+* **3D Parallax Tilt:** Login/Register cards physically react to mouse movement.
+* **Spring Physics:** Messages "pop" in with organic, bouncy animations.
+* **Living Backgrounds:** Animated nebula orbs and scanning cyber-grids that move with the user.
+* **Holographic Hovers:** Images and cards glow with a spectral interference effect on interaction.
 
-### **🎨 Cyber-SaaS UI/UX**
-* **Glassmorphism:** Frosted glass panels (`backdrop-blur-xl`) throughout the dashboard and chat.
-* **3D Parallax Tilt:** Login and Register cards react to mouse movement in 3D space.
-* **Living Backgrounds:** Animated organic orbs and scanning laser grids.
-* **Micro-Interactions:** Spring-physics message bubbles and punchy button clicks.
-* **Danger Zone:** specialized UI for account deletion with red warning tape aesthetics.
+### **⚡ Core Functionality**
+* **Real-Time Sync:** Instant message delivery via Secure WebSockets.
+* **Live Presence:** Real-time "Online/Offline" status with pulsing beacons.
+* **Smart Typing:** Reactive typing indicators that glow when active.
+* **Read Receipts:** WhatsApp-style status ticks (Grey = Sent, Green = Read).
+* **Secure Channels:** Private, encrypted channels for every conversation.
+* **Media Sharing:** Drag-and-drop image uploads with instant previews.
 
 ---
 
 ## 🛠️ Tech Stack
 
-<details>
-<summary><strong>Click to expand Tech Stack details</strong></summary>
-
 | Component | Technology | Description |
 | :--- | :--- | :--- |
 | **Backend** | Laravel 11 | The PHP Framework for Web Artisans. |
 | **Real-Time** | Laravel Reverb | First-party WebSocket server for Laravel. |
-| **Database** | SQLite | Serverless, zero-configuration database engine. |
 | **Frontend** | Vue 3 | The Progressive JavaScript Framework (Composition API). |
-| **Bridge** | Inertia.js | Modern monolith architecture (No API required). |
+| **Routing** | Inertia.js | Modern monolith architecture (No API required). |
 | **Styling** | Tailwind CSS | Utility-first CSS framework. |
-| **Icons** | Heroicons | Beautiful hand-crafted SVGs. |
-
-</details>
+| **Database** | SQLite | Serverless, zero-configuration database. |
 
 ---
 
 ## ⚡ Installation
 
-Follow these steps to deploy the Reverb grid on your local machine.
+Follow these steps to deploy the system on your local machine.
 
 ### **Prerequisites**
 * PHP 8.2+
@@ -84,16 +79,17 @@ Follow these steps to deploy the Reverb grid on your local machine.
 
 ### **1. Clone the Repository**
 ```bash
-git clone https://github.com/ShAiDSk/kali_chat-messenger.git
+git clone [https://github.com/ShAiDSk/kali_chat-messenger.git](https://github.com/ShAiDSk/kali_chat-messenger.git)
 cd kali_chat-messenger
+```
 
 ### **2. Install Dependencies**
 
 ```bash
-# Backend
+# Install PHP dependencies
 composer install
 
-# Frontend
+# Install Node dependencies
 npm install
 ```
 
@@ -104,8 +100,8 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-**Configure SQLite (Recommended for Dev):**
-Open `.env` and set:
+**Configure SQLite:**
+Open `.env` and update the database section:
 
 ```env
 DB_CONNECTION=sqlite
@@ -119,7 +115,7 @@ touch database/database.sqlite
 ```
 
 **Configure Reverb (WebSockets):**
-Ensure these are in your `.env`:
+Add this to your `.env` to enable real-time features:
 
 ```env
 BROADCAST_CONNECTION=reverb
@@ -137,17 +133,18 @@ VITE_REVERB_PORT="${REVERB_PORT}"
 VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 ```
 
-### **4. Database Migration**
+### **4. Finalize Setup**
 
 ```bash
 php artisan migrate
+php artisan storage:link
 ```
 
 -----
 
 ## 🖥️ Running the App
 
-You need **3 terminals** running simultaneously to power the Reverb Grid.
+You need **3 terminals** running simultaneously to power the application.
 
 ### **Terminal 1: Laravel Server**
 
@@ -171,29 +168,17 @@ php artisan reverb:start
 
 -----
 
-## 📸 Screenshots
-
-| Login Portal (3D Tilt) | Dashboard (Cyber Grid) |
-| :---: | :---: |
-|  |  |
-
-| Chat Interface (Glass) | Profile (Danger Zone) |
-| :---: | :---: |
-|  |  |
-
------
-
 ## 🧩 Directory Structure
 
 ```
-reverb-messenger/
+kali_chat-messenger/
 ├── app/
-│   ├── Events/            # Real-time Events (MessageSent, MessageRead)
+│   ├── Events/            # WebSocket Events (MessageSent, MessageRead)
 │   ├── Models/            # Eloquent Models (User, Message)
 │   └── Http/Controllers/  # ChatController logic
 ├── resources/
 │   └── js/
-│       ├── Components/    # Reusable UI (NavBar, Buttons)
+│       ├── Components/    # UI Components (NavBar, Buttons)
 │       ├── Layouts/       # AuthenticatedLayout (The Cyber Shell)
 │       └── Pages/         # Vue Views (Chat/Index.vue, Dashboard.vue)
 ├── routes/
@@ -222,6 +207,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 -----
 
-\<div align="center"\> \<sub\>Built with 💜 & ☕ by \<strong\>ItzShaidSk\</strong\> on \<strong\>Kali Linux\</strong\>\</sub\> \</div\>
+\<div align="center"\>
+\<sub\>Built with 💜 & ☕ by \<strong\>\<a href="https://www.google.com/search?q=https://github.com/ShAiDSk"\>ShAiDSk\</a\>\</strong\> on \<strong\>Kali Linux\</strong\>\</sub\>
+\</div\>
 
----
